@@ -48,6 +48,6 @@ class MessageController extends Controller
             return $TextRequestMsg->GetMessageXml();
         }
 
-        return 'success';
+        return \Yii::$app->request->get('echostr','success');
     }
 }
