@@ -23,18 +23,31 @@ class MessageController extends Controller
          * @var WeixinReponse $WeixinReponse
          */
         $WeixinReponse = \Yii::$app->weixinReponse;
-
-        if ($WeixinReponse->msgType == 'text') {
+        if ($WeixinReponse->MsgType == 'text') {
             $TextRequestMsg = new TextRequestMsg();
-            $TextRequestMsg->FromUserName = $WeixinReponse->openId;
-            $TextRequestMsg->ToUserName = $WeixinReponse->appId;
-            $TextRequestMsg->Content = $WeixinReponse->Content;
+            $TextRequestMsg->FromUserName = $WeixinReponse->appId;
+            $TextRequestMsg->ToUserName = $WeixinReponse->openId;
+            $TextRequestMsg->Content = $WeixinReponse->msgCx->Content;
             return $TextRequestMsg->GetMessageXml();
         }
 
         return 'success';
+    }
 
 
+    public function actionIndex(){
+        /**
+         * @var WeixinReponse $WeixinReponse
+         */
+        $WeixinReponse = \Yii::$app->weixinReponse;
+        if ($WeixinReponse->MsgType == 'text') {
+            $TextRequestMsg = new TextRequestMsg();
+            $TextRequestMsg->FromUserName = $WeixinReponse->appId;
+            $TextRequestMsg->ToUserName = $WeixinReponse->openId;
+            $TextRequestMsg->Content = $WeixinReponse->msgCx->Content;
+            return $TextRequestMsg->GetMessageXml();
+        }
 
+        return 'success';
     }
 }

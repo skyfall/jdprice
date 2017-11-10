@@ -18,7 +18,7 @@ class WeixinReponse extends Object
     /**
      * @var WeixinMessage $msgType
      */
-    public $msgType;
+    public $msgCx;
 
     //用户的openid
     public $openId;
@@ -70,7 +70,7 @@ class WeixinReponse extends Object
     public $postStr;
 
     public function init(){
-        if (!empty($this->msgType)){
+        if (!empty($this->MsgType)){
             return null;
         }
 
@@ -91,7 +91,7 @@ class WeixinReponse extends Object
             $parameter = $this->MsgTypeClass[$this->MsgType]['parameter'];
             $parameter['openid'] = $this->openId;
             $parameter['app_id'] = $this->appId;
-            $this->msgType = (new $class())->$initFun(array_merge($postObj,$parameter));
+            $this->msgCx = (new $class())->$initFun(array_merge($postObj,$parameter));
         }
         return true;
     }
