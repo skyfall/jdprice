@@ -6,7 +6,7 @@
  * Time: 上午11:35
  */
 
-namespace weixin\controller;
+namespace weixin\controllers;
 
 
 use api\weixin\request\TextRequestMsg;
