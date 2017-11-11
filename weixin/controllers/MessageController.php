@@ -31,7 +31,7 @@ class MessageController extends Controller
         $ree = [];
         $price = 0;
         $title = '';
-        $priceModle = $jd->getPriceStrage($id,$price,$title,$ree);
+        $priceModle = $jd->getTitle($id,$ree);
         var_dump($priceModle);
         var_dump($ree);
         var_dump($price);

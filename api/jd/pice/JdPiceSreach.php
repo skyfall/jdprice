@@ -173,14 +173,16 @@ class JdPiceSreach extends Object
             'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         ];
 
+
         curl_setopt(self::$curl, CURLOPT_HTTPHEADER, $header);
         curl_setopt(self::$curl, CURLOPT_URL, $url);
         curl_setopt(self::$curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt(self::$curl, CURLOPT_HEADER, 0);
+        curl_setopt(self::$curl, CURLOPT_FOLLOWLOCATION, 1);
         $output = curl_exec(self::$curl);
 
         $output = substr($output,0,1000);
-//        var_dump($output);exit();
+
 //        var_dump(mb_detect_encoding($output, "auto"));exit();
         $fileType = mb_detect_encoding($output , array('UTF-8','GBK','LATIN1','BIG5' , 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1')) ;
         $output = mb_convert_encoding($output ,'utf-8' , $fileType);
