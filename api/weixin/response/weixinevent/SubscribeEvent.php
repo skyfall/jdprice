@@ -18,4 +18,6 @@ class SubscribeEvent extends WeixinMessage
 
     public $Ticket;
 
+    public $Event;
+
 }

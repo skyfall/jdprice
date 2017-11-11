@@ -20,4 +20,6 @@ class LocationEvent extends WeixinMessage
 
     public $Precision;
 
+    public $Event;
+
 }

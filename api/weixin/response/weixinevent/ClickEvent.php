@@ -16,4 +16,6 @@ class ClickEvent extends WeixinMessage
 {
     public $EventKey;
 
+    public $Event;
+
 }

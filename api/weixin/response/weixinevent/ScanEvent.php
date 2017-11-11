@@ -18,4 +18,6 @@ class ScanEvent extends WeixinMessage
 
     public $Ticket;
 
+    public $Event;
+
 }

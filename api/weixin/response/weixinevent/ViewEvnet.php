@@ -15,4 +15,6 @@ class ViewEvnet extends WeixinMessage
 {
     public $EventKey;
 
+    public $Event;
+
 }
