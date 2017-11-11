@@ -25,8 +25,6 @@ class UserController extends Object{
         if (empty($WeixinUser)){
             $WeixinUser = new WeixinUser();
             $WeixinUser->creaate_at = time();
-        }else{
-            $userFrom->load($WeixinUser->getAttributes(),'');
         }
         $loadArr = $userFrom->getAttributes();
         $loadEndArr = [];

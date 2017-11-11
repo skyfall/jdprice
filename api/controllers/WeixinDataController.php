@@ -34,6 +34,10 @@ class WeixinDataController extends Object
             $msgTpyeModel->create_at = time();
             $msgTpyeModel->update_at = time();
             $msgTpyeModel->count = 0;
+            if (!$msgTpyeModel->save()){
+                $errArr['addMegTypeCount'][] = '添加失败 appid:'.$appid.' mesType:'.$msgTpye.' res:'.json_encode($msgTpyeModel->errors,JSON_UNESCAPED_SLASHES);
+                return false;
+            }
         }
 
         $upTime = time()- $msgTpyeModel->update_at;
