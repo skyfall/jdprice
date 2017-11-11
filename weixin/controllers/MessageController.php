@@ -51,14 +51,6 @@ class MessageController extends Controller
          */
         $WeixinReponse = \Yii::$app->weixinReponse;
 
-        if ($WeixinReponse->MsgType == 'text') {
-            $TextRequestMsg = new TextRequestMsg();
-            $TextRequestMsg->FromUserName = $WeixinReponse->appId;
-            $TextRequestMsg->ToUserName = $WeixinReponse->openId;
-            $TextRequestMsg->Content = $WeixinReponse->msgCx->Content;
-            return $TextRequestMsg->GetMessageXml();
-        }
-
         $WeixinDataController = new WeixinDataController();
         $DataErr = [];
 
@@ -97,6 +89,14 @@ class MessageController extends Controller
             $countBool = $WeixinDataController->addMegTypeCount($WeixinReponse->appId,$WeixinReponse->MsgType,$DataErr);
             if (!$countBool){
                 \Yii::error('添加公众号事件统计失败 res:'.json_encode($DataErr,JSON_UNESCAPED_SLASHES));
+            }
+
+            if ($WeixinReponse->MsgType == 'text') {
+                $TextRequestMsg = new TextRequestMsg();
+                $TextRequestMsg->FromUserName = $WeixinReponse->appId;
+                $TextRequestMsg->ToUserName = $WeixinReponse->openId;
+                $TextRequestMsg->Content = $WeixinReponse->msgCx->Content;
+                return $TextRequestMsg->GetMessageXml();
             }
         }
 
