@@ -49,6 +49,7 @@ class UserController extends Object{
         $WeixinUser = WeixinUser::findOne(['app_id'=>$app_id,'openid'=>$openid]);
         if (!empty($WeixinUser)){
             $WeixinUser->subscribe = 0;
+            $WeixinUser->update_at = time();
             $WeixinUser->save();
             return true;
         }

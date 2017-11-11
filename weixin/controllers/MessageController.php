@@ -113,6 +113,10 @@ class MessageController extends Controller
         //添加用户信息
         $userFrom = new AddUserFrom();
         $userFrom->load($userInf,'');
+        //{"app_id":["App ID cannot be blank."],"openid":["Openid cannot be blank."],"subscribe":["Subscribe cannot be blank."],"nickname":["Nickname cannot be blank."],"subscribe_time":["Subscribe Time cannot be blank."]}
+        $userFrom->app_id = $WeixinReponse->appId;
+        $userFrom->openid = $WeixinReponse->openId;
+        $userFrom->subscribe = 1;
         $addBool = (new UserController())->addUser($userFrom,$errArr);
         if (empty($addBool)){
             \Yii::error('添加用户失败 res:'.json_encode($errArr,JSON_UNESCAPED_SLASHES));
@@ -123,6 +127,17 @@ class MessageController extends Controller
     }
 
     public function unsubscribe(){
+
+        /**
+         * @var WeixinReponse $WeixinReponse
+         */
+        $WeixinReponse = \Yii::$app->weixinReponse;
+        $errArr = [];
+        $addBool = (new UserController())->unSubscribe($WeixinReponse->appId,$WeixinReponse->openId,$errArr);
+        if (empty($addBool)){
+            \Yii::error('取消关注失败 res:'.json_encode($errArr,JSON_UNESCAPED_SLASHES));
+            return null;
+        }
         return null;
     }
 

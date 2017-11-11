@@ -12,8 +12,8 @@ use Yii;
  * @property string $openid 用户的微信号
  * @property int $subscribe 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
  * @property int $creaate_at 创建时间
- * @property string $nickname 用户的昵称
  * @property int $update_at 更新时间
+ * @property string $nickname 用户的昵称
  * @property int $subscribe_time 用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间
  * @property int $sex 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
  * @property string $city 用户所在城市
@@ -42,7 +42,7 @@ class WeixinUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['app_id', 'openid', 'subscribe', 'creaate_at', 'nickname', 'update_at', 'subscribe_time'], 'required'],
+            [['app_id', 'openid', 'subscribe', 'creaate_at', 'update_at'], 'required'],
             [['subscribe', 'creaate_at', 'update_at', 'subscribe_time', 'sex'], 'integer'],
             [['headimgurl', 'remark', 'tagid_list'], 'string'],
             [['app_id'], 'string', 'max' => 20],
@@ -62,8 +62,8 @@ class WeixinUser extends \yii\db\ActiveRecord
             'openid' => 'Openid',
             'subscribe' => 'Subscribe',
             'creaate_at' => 'Creaate At',
-            'nickname' => 'Nickname',
             'update_at' => 'Update At',
+            'nickname' => 'Nickname',
             'subscribe_time' => 'Subscribe Time',
             'sex' => 'Sex',
             'city' => 'City',
