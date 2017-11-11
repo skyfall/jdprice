@@ -28,7 +28,18 @@ class UserController extends Object{
         }else{
             $userFrom->load($WeixinUser->getAttributes(),'');
         }
-        $WeixinUser->load($userFrom->getAttributes(),'');
+        $loadArr = $userFrom->getAttributes();
+        $loadEndArr = [];
+        foreach ($loadArr as $k=>$v){
+            if (!empty($v)){
+                $loadEndArr[$k] = $v;
+            }
+
+        }
+        if (!empty($loadEndArr)){
+            $WeixinUser->load($loadEndArr,'');
+        }
+
         $WeixinUser->update_at = time();
         if ($WeixinUser->save()){
             return true;
