@@ -115,7 +115,7 @@ class JdPiceSreach extends Object
 
         $randJQ = rand(1000000,9999999);
         $randAre = rand(1000,9999);
-        $randUid = rand(1000000000,9999999999);
+        $randUid = rand(10000000,99999999);
         $url = "https://p.3.cn/prices/mgets?callback=jQuery{$randJQ}&type=1&area=1_72_{$randAre}_0&pdtk=&pduid={$randUid}&pdpin=&pin=null&pdbp=0&skuIds=J_{$itemId}&ext=11000000&source=item-pc";
 
         $header = [
