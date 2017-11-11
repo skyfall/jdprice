@@ -38,8 +38,9 @@ class WeixinAccessToken extends Object
             $WeixinAccessTokenModle->create_at = time();
             $WeixinAccessTokenModle->app_id = $appid;
         }else{
-            //乐观锁  控制并发
-            $res = \api\models\WeixinAccessToken::updateAll(['update_at'=>1],
+            //乐观锁  控制并发  更新到期时间 为到期前10秒 保证 并发时候进程不会重复更新
+            $upTime =time() - \Yii::$app->params['appAccessTokenTtl'] + 10;
+            $res = \api\models\WeixinAccessToken::updateAll(['update_at'=>$upTime],
                 'id = :id and update_at = :update_at',
                 [':id'=>$WeixinAccessTokenModle->id,':update_at'=>$WeixinAccessTokenModle->update_at]);
             if (!$res){
