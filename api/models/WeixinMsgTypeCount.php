@@ -35,7 +35,7 @@ class WeixinMsgTypeCount extends \yii\db\ActiveRecord
             [['time_hours', 'count', 'create_at', 'update_at'], 'integer'],
             [['app_id'], 'string', 'max' => 20],
             [['msg_type'], 'string', 'max' => 45],
-            [['app_id', 'time_hours', 'msg_type'], 'unique', 'targetAttribute' => ['app_id', 'time_hours', 'msg_type']],
+            [['app_id'], 'unique', 'targetAttribute' => ['app_id', 'time_hours', 'msg_type']],
         ];
     }
 
