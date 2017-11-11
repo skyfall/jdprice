@@ -49,8 +49,9 @@ class WeixinAccessToken extends Object
         }
 
         $secret = \Yii::$app->params['appList'][$appid]['EncodingAESKey'];
+        $app_id = \Yii::$app->params['appList'][$appid]['appid'];
         //调用api接口获取令牌
-        $resArr = (new BaseApi())->getAccessToken($appid,$secret);
+        $resArr = (new BaseApi())->getAccessToken($app_id,$secret);
         if (!isset($resArr['access_token'])){
             $errArr['getAccessToken'][] = '请求接口获取令牌失败';
             $errArr['getAccessToken'][] = 'res: '.json_encode($resArr);
