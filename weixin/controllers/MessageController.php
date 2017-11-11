@@ -10,6 +10,7 @@ namespace weixin\controllers;
 
 
 use api\controllers\UserController;
+use api\controllers\WeixinDataController;
 use api\modelsfrom\AddUserFrom;
 use api\weixin\accesstoken\WeixinAccessToken;
 use api\weixin\request\TextRequestMsg;
@@ -49,6 +50,7 @@ class MessageController extends Controller
          * @var WeixinReponse $WeixinReponse
          */
         $WeixinReponse = \Yii::$app->weixinReponse;
+
         if ($WeixinReponse->MsgType == 'text') {
             $TextRequestMsg = new TextRequestMsg();
             $TextRequestMsg->FromUserName = $WeixinReponse->appId;
@@ -57,8 +59,16 @@ class MessageController extends Controller
             return $TextRequestMsg->GetMessageXml();
         }
 
+        $WeixinDataController = new WeixinDataController();
+        $DataErr = [];
+
         $EventStr = null;
         if ($WeixinReponse->MsgType == 'event' ){
+            //添加事件数量
+            $countBool = $WeixinDataController->addMegTypeCount($WeixinReponse->appId,'event_'.$WeixinReponse->msgCx->Event,$DataErr);
+            if (!$countBool){
+                \Yii::error('添加公众号事件统计失败 res:'.json_encode($DataErr,JSON_UNESCAPED_SLASHES));
+            }
             switch ($WeixinReponse->msgCx->Event){
                 case 'subscribe':
                     $EventStr = $this->subscribe();
@@ -81,6 +91,12 @@ class MessageController extends Controller
                 default:
                     $EventStr = $this->noFind();
                     break;
+            }
+        }else{
+            //添加事件数量
+            $countBool = $WeixinDataController->addMegTypeCount($WeixinReponse->appId,$WeixinReponse->MsgType,$DataErr);
+            if (!$countBool){
+                \Yii::error('添加公众号事件统计失败 res:'.json_encode($DataErr,JSON_UNESCAPED_SLASHES));
             }
         }
 
