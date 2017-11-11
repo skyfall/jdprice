@@ -8,5 +8,7 @@ return [
         ]
     ],
     //令牌失效时间
-    'appAccessTokenTtl'=>6000
+    'appAccessTokenTtl'=>6000,
+    //商品价格缓存时间
+//    'PriceStrage'=>3600,
 ];
