@@ -88,6 +88,7 @@ class JdPiceSreach extends Object
 
         $price =  $GoodPrice->price;
         $title = $GoodPrice->title;
+        return true;
     }
 
     private function pricelogDb($goodId,$mytitle,$price,&$errArr){
