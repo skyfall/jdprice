@@ -22,6 +22,11 @@ class BaseEvent extends WeixinMessage
             'initFun'=>'MessageInit',
             'parameter'=>[],
         ],
+        'unsubscribe'=>[
+            'class'=>'api\weixin\response\weixinevent\SubscribeEvent',
+            'initFun'=>'MessageInit',
+            'parameter'=>[],
+        ],
         'SCAN'=>[
             'class'=>'api\weixin\response\weixinevent\ScanEvent',
             'initFun'=>'MessageInit',
