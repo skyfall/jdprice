@@ -200,7 +200,7 @@ class JdPiceSreach extends Object
             return false;
         }
 
-        $length = $nextIndex - $startIndex + 8;
+        $length = $nextIndex+7 - $startIndex + 8;
         if ($title = substr($output,$startIndex+7,$length)){
             if ($myIndex = strpos($title,'【图片 价格 品牌 报价】')){
                 return substr($title,0,$myIndex);
