@@ -26,7 +26,8 @@ class WeixinDataController extends Object
         //转换小写  前后去空
         $msgTpye = trim(strtolower($msgTpye));
         $time = mktime(date('H'),0,0,date('m'),date('d'),date('Y'));
-        if (!$msgTpyeModel = WeixinMsgTypeCount::findOne(['app_id'=>$appid,'time_hours'=>$time,'msg_type'=>$msgTpye])){
+        $msgTpyeModel = WeixinMsgTypeCount::findOne(['app_id'=>$appid,'time_hours'=>$time,'msg_type'=>$msgTpye])
+        if (empty($msgTpyeModel)){
             $msgTpyeModel = new WeixinMsgTypeCount();
             $msgTpyeModel->app_id = $appid;
             $msgTpyeModel->time_hours = $time;
