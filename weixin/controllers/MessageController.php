@@ -195,7 +195,7 @@ class MessageController extends Controller
                 $TextRequestMsg->Content = '商品查找失败';
                 return $TextRequestMsg->GetMessageXml();
             }
-            $TextRequestMsg->Content = '该商品'.$title." <br>现价:".round($price/100,2);
+            $TextRequestMsg->Content = '该商品'.$title." \r\n 现价:".round($price/100,2);
             return $TextRequestMsg->GetMessageXml();
 
 
