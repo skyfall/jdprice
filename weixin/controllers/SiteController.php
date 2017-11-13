@@ -33,4 +33,13 @@ class SiteController extends Controller
 
 
     }
+
+
+    public function actionIndex(){
+        return 'hello Word!';
+    }
+
+    public function actionError(){
+        return 'error Word!';
+    }
 }
