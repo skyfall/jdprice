@@ -207,7 +207,7 @@ class MessageController extends Controller
                  * @var JdPromotionFrom $promotionFrom
                  */
                 foreach ($promotionFroms as $promotionFrom){
-                    $TextRequestMsg->Content .= "满".$promotionFrom->quota."减".$promotionFrom->discount;
+                    $TextRequestMsg->Content .= "满".$promotionFrom->quota."减".$promotionFrom->discount."\r";
                 }
             }
 
