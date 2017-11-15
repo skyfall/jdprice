@@ -13,6 +13,7 @@ use api\controllers\UserController;
 use api\controllers\WeixinDataController;
 use api\jd\pice\JdPiceSreach;
 use api\modelsfrom\AddUserFrom;
+use api\modelsfrom\JdPromotionFrom;
 use api\weixin\accesstoken\WeixinAccessToken;
 use api\weixin\request\TextRequestMsg;
 use api\weixin\weixinapi\UserApi;
@@ -31,7 +32,7 @@ class MessageController extends Controller
         $ree = [];
         $price = 0;
         $title = '';
-        $priceModle = $jd->getTitle($id,$ree);
+        $priceModle = $jd->getGoodPromotionStrage($id,$ree);
         var_dump($priceModle);
         var_dump($ree);
         var_dump($price);
@@ -195,7 +196,21 @@ class MessageController extends Controller
                 $TextRequestMsg->Content = '商品查找失败';
                 return $TextRequestMsg->GetMessageXml();
             }
+
+
+
             $TextRequestMsg->Content = "该商品 \r ".$title." \r\n 现价:".round($price/100,2);
+
+            if (!$promotionFroms = $jd->getGoodPromotionStrage($pathArr[0],$errArr)){
+                $TextRequestMsg->Content .= "\r\n 优惠券信息:\r";
+                /**
+                 * @var JdPromotionFrom $promotionFrom
+                 */
+                foreach ($promotionFroms as $promotionFrom){
+                    $TextRequestMsg->Content .= "满".$promotionFrom->quota."减".$promotionFrom->discount;
+                }
+            }
+
             return $TextRequestMsg->GetMessageXml();
 
 
