@@ -201,7 +201,7 @@ class MessageController extends Controller
 
             $TextRequestMsg->Content = "该商品 \r ".$title." \r\n 现价:".round($price/100,2);
 
-            if (!$promotionFroms = $jd->getGoodPromotionStrage($pathArr[0],$errArr)){
+            if ($promotionFroms = $jd->getGoodPromotionStrage($pathArr[0],$errArr)){
                 $TextRequestMsg->Content .= "\r\n 优惠券信息:\r";
                 /**
                  * @var JdPromotionFrom $promotionFrom
