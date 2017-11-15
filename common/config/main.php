@@ -33,6 +33,13 @@ return [
                     'logFile' => '@runtime/logs/'.date("Y-m-d",time()).'Warning.log',
                     'maxFileSize' => 1024 * 2,
                 ],
+                [
+                    'logVars'=>['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'],
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error'],
+                    'logFile' => '@runtime/logs/'.date("Y-m-d",time()).'error.log',
+                    'maxFileSize' => 1024 * 2,
+                ],
             ],
         ],
     ],
