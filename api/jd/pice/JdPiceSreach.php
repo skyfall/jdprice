@@ -417,7 +417,7 @@ class JdPiceSreach extends Object
                     $code = base_convert(substr($str, 2, 2), 16, 10);
                     $code2 = base_convert(substr($str, 4), 16, 10);
                     $c = chr($code).chr($code2);
-                    $c = iconv('UCS-2', 'UTF-8//IGNORE', $c);
+                    $c = iconv('UCS-2', 'UTF-8', $c);
                     $name .= $c;
                 }
                 else
