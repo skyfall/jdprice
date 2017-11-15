@@ -252,43 +252,48 @@ class JdPiceSreach extends Object
      * @return string|bool
      */
     public function getTitle($itemId,&$errArr){
+        $JdGoodInfFrom = $this->getGoodConfigStrage($itemId,$errArr);
+        if (!$JdGoodInfFrom){
+            return false;
+        }
+        return $JdGoodInfFrom->name;
         // https://item.jd.com/16182548288.html
-        $url = "https://item.jd.com/{$itemId}.html";
-        $header = [
-            'Accept: */*',
-//            'Connection: keep-alive',
-//            'Accept-Encoding: gzip, deflate, br',
-            'Accept-Language: zh-CN,zh;q=0.8',
-            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
-        ];
+//        $url = "https://item.jd.com/{$itemId}.html";
+//        $header = [
+//            'Accept: */*',
+////            'Connection: keep-alive',
+////            'Accept-Encoding: gzip, deflate, br',
+//            'Accept-Language: zh-CN,zh;q=0.8',
+//            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+//        ];
 
-        $output = $this->getHtml($url,$header);
-
-
-        if (!$startIndex = strpos($output,'<title>')){
-            $errArr['getTitle'][] = '获取商品标题失败 url:'.$url;
-            return false;
-        }
-//        var_dump($output);exit();
-
-        if (!$nextIndex = strpos($output,'</title>')){
-            $errArr['getTitle'][] = '获取商品尾巴标题标签失败 url:'.$url;
-            return false;
-        }
-
-        $length = $nextIndex - 7 - $startIndex ;
-        if ($title = substr($output,$startIndex+7,$length)){
-            $title = str_replace('</title>','',$title);
-            if ($myIndex = strpos($title,'【图片 价格 品牌 报价】')){
-                return substr($title,0,$myIndex);
-            }
-            if ($myIndex = strpos($title,'【行情 报价 价格 评测】')){
-                return substr($title,0,$myIndex);
-            }
-            return $title;
-        }
-        $errArr['getTitle'][] = '截取标题失败 url:'.$url;
-        return false;
+//        $output = $this->getHtml($url,$header);
+//
+//
+//        if (!$startIndex = strpos($output,'<title>')){
+//            $errArr['getTitle'][] = '获取商品标题失败 url:'.$url;
+//            return false;
+//        }
+////        var_dump($output);exit();
+//
+//        if (!$nextIndex = strpos($output,'</title>')){
+//            $errArr['getTitle'][] = '获取商品尾巴标题标签失败 url:'.$url;
+//            return false;
+//        }
+//
+//        $length = $nextIndex - 7 - $startIndex ;
+//        if ($title = substr($output,$startIndex+7,$length)){
+//            $title = str_replace('</title>','',$title);
+//            if ($myIndex = strpos($title,'【图片 价格 品牌 报价】')){
+//                return substr($title,0,$myIndex);
+//            }
+//            if ($myIndex = strpos($title,'【行情 报价 价格 评测】')){
+//                return substr($title,0,$myIndex);
+//            }
+//            return $title;
+//        }
+//        $errArr['getTitle'][] = '截取标题失败 url:'.$url;
+//        return false;
 
     }
 
