@@ -23,6 +23,8 @@ class JdPiceSreach extends Object
 
     public static $curlHtmlDom = [];
 
+    public $debugArr = [];
+
     public function init(){
         if (empty(self::$curl)){
             self::$curl = curl_init();
@@ -466,7 +468,9 @@ class JdPiceSreach extends Object
             for ($i = 0 ; $i < $TagCount ; $i++){
                 $resStr .= $TagArr[$i]."}";
             }
-            return str_replace(['\'','\"'],['',''],$resStr);
+            $resStr = str_replace(['\'','\"'],['',''],$resStr);
+            $this->debugArr[] = $resStr ;
+            return $resStr;
         }
         if ($isNextTag && $isNextTag == '['){
             if (!$nextTagIndex = strpos($configStr,']',$indexIndex+strlen($str))){
@@ -487,8 +491,9 @@ class JdPiceSreach extends Object
             for ($i = 0 ; $i < $TagCount ; $i++){
                 $resStr .= $TagArr[$i]."]";
             }
-
-            return str_replace(['\'','\"'],['',''],$resStr);
+            $resStr = str_replace(['\'','\"'],['',''],$resStr);
+            $this->debugArr[] = $resStr ;
+            return $resStr;
 
         }
         //如果为空 判断是否是最后一个标签
@@ -502,7 +507,11 @@ class JdPiceSreach extends Object
 //            $endIndex = $indexIndex+strlen($str) + $endIndex;
         }
         $resStr = substr($configStr,$indexIndex+strlen($str),$endIndex-$indexIndex-strlen($str));
-        return str_replace(['\'','\"'],['',''],$resStr);
+
+        $resStr = str_replace(['\'','\"'],['',''],$resStr);
+        $this->debugArr[] = $resStr ;
+        return $resStr;
+
 
     }
 
