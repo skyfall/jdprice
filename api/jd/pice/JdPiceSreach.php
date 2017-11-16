@@ -14,7 +14,8 @@ use api\models\GoodPrice;
 use api\models\GoodPriceLog;
 use api\models\GoodPromotion;
 use api\modelsfrom\JdGoodInfFrom;
-use api\modelsfrom\JdPromotionFrom;
+use api\modelsfrom\JDPromFrom;
+use api\modelsfrom\JdSkuCouponFrom;
 use yii\base\Object;
 
 class JdPiceSreach extends Object
@@ -135,15 +136,21 @@ class JdPiceSreach extends Object
         return $JdGoodInfFrom;
     }
 
-    public function getGoodPromotionStrage($itemId,&$errArr){
+    /**
+     * 带缓冲 获取商品满减信息
+     * @param $itemId
+     * @param $errArr
+     * @return array|bool
+     */
+    public function getGoodSkuCouponStrage($itemId,&$errArr){
         //查找数据库是否存在数据
         $goodId = "{$this->sellType}_{$itemId}";
         if ($GoodPromotion = GoodPromotion::findOne(['goodId'=>$goodId])){
             if ($GoodPromotion->update_at + \Yii::$app->params['goodPromotionStarageTtl'] >= time()){
                 $resArr = [];
                 $GoodPromotionArr = json_decode($GoodPromotion->good_inf_arr,true);
-                foreach ($GoodPromotionArr as $v){
-                    $JdPromotionFrom  = new JdPromotionFrom();
+                foreach ($GoodPromotionArr['skuCoupon'] as $v){
+                    $JdPromotionFrom  = new JdSkuCouponFrom();
                     $JdPromotionFrom->load($v,'');
                     $resArr[] = $JdPromotionFrom;
                 }
@@ -156,8 +163,10 @@ class JdPiceSreach extends Object
             $GoodPromotion->good_seller = $this->sellType;
         }
 
+        $htmlArr = [];
         //查询信息
-        if (!$resArr = $this->getGoodPromotion($itemId,$errArr)){
+        $resArr = $this->getGoodSkuCoupon($itemId,$errArr,$htmlArr);
+        if ($resArr === false){
             \Yii::error('查找jd商品促销信息失败 res:'.json_encode($errArr,JSON_UNESCAPED_UNICODE));
             return false;
         }
@@ -166,7 +175,8 @@ class JdPiceSreach extends Object
         foreach ($resArr as $v){
             $DBarr[] = $v->getAttributes();
         }
-        $GoodPromotion->good_inf_arr = json_encode($DBarr,JSON_UNESCAPED_UNICODE);
+
+        $GoodPromotion->good_inf_arr = json_encode($htmlArr,JSON_UNESCAPED_UNICODE);
         if (!$GoodPromotion->save()){
             \Yii::error('保存商品jd商品促销信息失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE));
             $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE);
@@ -175,6 +185,55 @@ class JdPiceSreach extends Object
 
 
     }
+
+    /**
+     * 带缓冲 获取商品促销信息
+     * @param $itemId
+     * @param $errArr
+     * @return array|bool
+     */
+    public function getGoodPromStrage($itemId,&$errArr){
+        //查找数据库是否存在数据
+        $goodId = "{$this->sellType}_{$itemId}";
+        if ($GoodPromotion = GoodPromotion::findOne(['goodId'=>$goodId])){
+            if ($GoodPromotion->update_at + \Yii::$app->params['goodPromotionStarageTtl'] >= time()){
+                $resArr = [];
+                $GoodPromotionArr = json_decode($GoodPromotion->good_inf_arr,true);
+                foreach ($GoodPromotionArr['prom']['pickOneTag'] as $v){
+                    $JdPromotionFrom  = new JDPromFrom();
+                    $JdPromotionFrom->load($v,'');
+                    $resArr[] = $JdPromotionFrom;
+                }
+                return $resArr;
+            }
+        }else{
+            $GoodPromotion = new GoodPromotion();
+            $GoodPromotion->create_at = time();
+            $GoodPromotion->goodId = $goodId;
+            $GoodPromotion->good_seller = $this->sellType;
+        }
+
+        $htmlArr = [];
+        //查询信息
+        $resArr = $this->getGoodProm($itemId,$errArr,$htmlArr);
+        if ($resArr === false){
+            \Yii::error('查找jd商品促销信息失败 res:'.json_encode($errArr,JSON_UNESCAPED_UNICODE));
+            return false;
+        }
+        $GoodPromotion->update_at = time();
+        $DBarr = [];
+        foreach ($resArr as $v){
+            $DBarr[] = $v->getAttributes();
+        }
+
+        $GoodPromotion->good_inf_arr = json_encode($htmlArr,JSON_UNESCAPED_UNICODE);
+        if (!$GoodPromotion->save()){
+            \Yii::error('保存商品jd商品促销信息失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE));
+            $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE);
+        }
+        return $resArr;
+    }
+
     /**
      * 写入价格变动信息
      * @param $goodId
@@ -354,12 +413,12 @@ class JdPiceSreach extends Object
     }
 
     /**
-     * 获取商品优惠券信息
+     * 获取商品满减信息
      * @param $itemId
      * @param $errArr
      * @return array|bool
      */
-    public function getGoodPromotion($itemId,&$errArr){
+    public function getGoodSkuCoupon($itemId,&$errArr,&$htmlArr = []){
         //带缓存的数据中获取商品的配置信息
         if (!$goodInfFrom = $this->getGoodConfigStrage($itemId,$errArr)){
             return false;
@@ -394,10 +453,61 @@ class JdPiceSreach extends Object
             $errArr['getGoodPromotion'][] = '不存在优惠券数组信息 url:'.$url;
             return false;
         }
-
+        $htmlArr = $promArr;
         $resArr = [];
         foreach ($promArr['skuCoupon'] as $v){
-            $jdPromFrom = new JdPromotionFrom();
+            $jdPromFrom = new JdSkuCouponFrom();
+            $jdPromFrom->load($v,'');
+            $resArr[] = $jdPromFrom;
+        }
+        return $resArr;
+    }
+
+    /**
+     * 获取商品促销信息
+     * @param $itemId
+     * @param $errArr
+     * @param array $htmlArr
+     */
+    public function getGoodProm($itemId,&$errArr,&$htmlArr = []){
+        //带缓存的数据中获取商品的配置信息
+        if (!$goodInfFrom = $this->getGoodConfigStrage($itemId,$errArr)){
+            return false;
+        }
+        $rdJq = rand(1000000,9999999);
+        $rdArear = rand(1000,9999);
+        $cat = urlencode(implode(',',$goodInfFrom->cat));
+        //url https://cd.jd.com/promotion/v2?callback=jQuery7302796&skuId=11075445&area=1_72_2799_0&shopId=1000011743&venderId=1000011743&cat=1713%2C3287%2C3800&isCanUseDQ=isCanUseDQ-1&isCanUseJQ=isCanUseJQ-1&_=1510759885402
+        $url = "https://cd.jd.com/promotion/v2?callback=jQuery{$rdJq}&skuId={$goodInfFrom->skuid}&area=1_72_{$rdArear}_0&shopId={$goodInfFrom->shopId}&venderId={$goodInfFrom->venderId}&cat={$cat}&isCanUseDQ=isCanUseDQ-1&isCanUseJQ=isCanUseJQ-1&_=".time()*1000;
+        $header = [
+            'Accept: */*',
+//            'Connection: keep-alive',
+//            'Accept-Encoding: gzip, deflate, br',
+            'Accept-Language: zh-CN,zh;q=0.8',
+            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+        ];
+        $resStr = $this->getHtml($url,$header);
+        $index = strpos($resStr,"jQuery{$rdJq}(");
+//        var_dump("jQuery{$rdJq}");
+//        var_dump($resStr);exit();
+        if ($index === false){
+            $errArr['getGoodPromotion'][] = '请求获取优惠信息失败 url:'.$url;
+            return false;
+        }
+        $json = substr($resStr,strlen("jQuery{$rdJq}("),strlen($resStr)-1-strlen("jQuery{$rdJq}("));
+        if (!$promArr = json_decode($json,true)){
+            $errArr['getGoodPromotion'][] = '装换数组失败 url:'.$url;
+            return false;
+        }
+
+        if (!isset($promArr['skuCoupon']) || !is_array($promArr['skuCoupon'])){
+            $errArr['getGoodPromotion'][] = '不存在优惠券数组信息 url:'.$url;
+            return false;
+        }
+        $htmlArr = $promArr;
+        $resArr = [];
+        foreach ($promArr['prom']['pickOneTag'] as $v){
+            $jdPromFrom = new JDPromFrom();
             $jdPromFrom->load($v,'');
             $resArr[] = $jdPromFrom;
         }

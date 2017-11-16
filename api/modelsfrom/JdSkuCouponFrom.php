@@ -12,7 +12,7 @@ namespace api\modelsfrom;
 
 use yii\base\Model;
 
-class JdPromotionFrom extends Model
+class JdSkuCouponFrom extends Model
 {
     public $couponType;
     public $trueDiscount;
@@ -44,7 +44,7 @@ class JdPromotionFrom extends Model
         return [
             [
                 [
-                    'couponType','couponType','trueDiscount','couponKind','discountDesc','beginTime','userClass','url',
+                    'couponType','trueDiscount','couponKind','discountDesc','beginTime','userClass','url',
                     'overlapDesc','couponStyle','area','hourCoupon','overlap','endTime','key','addDays','quota','toUrl',
                     'timeDesc','roleId','discount','discountFlag','limitType','name','batchId'
                 ],
@@ -55,7 +55,6 @@ class JdPromotionFrom extends Model
 
     public function attributeLabels(){
         return [
-            "couponType"=>"",
             "couponType"=>"",
             "trueDiscount"=>"",
             "couponKind"=>"",

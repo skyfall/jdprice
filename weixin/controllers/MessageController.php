@@ -13,7 +13,8 @@ use api\controllers\UserController;
 use api\controllers\WeixinDataController;
 use api\jd\pice\JdPiceSreach;
 use api\modelsfrom\AddUserFrom;
-use api\modelsfrom\JdPromotionFrom;
+use api\modelsfrom\JDPromFrom;
+use api\modelsfrom\JdSkuCouponFrom;
 use api\weixin\accesstoken\WeixinAccessToken;
 use api\weixin\request\TextRequestMsg;
 use api\weixin\weixinapi\UserApi;
@@ -32,16 +33,14 @@ class MessageController extends Controller
         $ree = [];
         $price = 0;
         $title = '';
-        $priceModle = $jd->getGoodConfig($id,$ree);
+        $priceModle = $jd->getGoodSkuCouponStrage($id,$reeet);
 //        json_decode()
 //        var_dump($jd->unicode_decode('\u4f20\u4e16\u7ecf\u5178\u4e66\u4e1b\uff1a\u0055\u004e\u0049\u0058\u7f16\u7a0b\u827a\u672f'));
 //        exit();
 //        var_dump($jd::$curlHtmlDom);
-        var_dump($priceModle->name);
         var_dump($priceModle);
+
         var_dump($ree);
-        var_dump($price);
-        var_dump($title);
         exit();
 
         $errArr = [];
@@ -206,15 +205,28 @@ class MessageController extends Controller
 
             $TextRequestMsg->Content = "该商品 \r ".$title." \r\n 现价:".round($price/100,2);
 
-            if ($promotionFroms = $jd->getGoodPromotionStrage($pathArr[0],$errArr)){
+            //获取商品优惠券信息
+            if ($promotionFroms = $jd->getGoodSkuCouponStrage($pathArr[0],$errArr)){
                 $TextRequestMsg->Content .= "\r\n 优惠券信息:\r";
                 /**
-                 * @var JdPromotionFrom $promotionFrom
+                 * @var JdSkuCouponFrom $promotionFrom
                  */
                 foreach ($promotionFroms as $promotionFrom){
                     $TextRequestMsg->Content .= "满".$promotionFrom->quota."减".$promotionFrom->discount."\r";
                 }
             }
+
+            //获取商品满减少信息
+            if ($proFroms = $jd->getGoodPromStrage($pathArr[0],$errArr)){
+                $TextRequestMsg->Content .= "\r\n 促销信息:\r";
+                /**
+                 * @var JDPromFrom $promotionFrom
+                 */
+                foreach ($promotionFroms as $promotionFrom){
+                    $TextRequestMsg->Content .= $promotionFrom->content."\r";
+                }
+            }
+
 
             return $TextRequestMsg->GetMessageXml();
 
