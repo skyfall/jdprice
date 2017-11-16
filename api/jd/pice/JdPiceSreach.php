@@ -158,6 +158,7 @@ class JdPiceSreach extends Object
 
         //查询信息
         if (!$resArr = $this->getGoodPromotion($itemId,$errArr)){
+            \Yii::error('查找jd商品促销信息失败 res:'.json_encode($errArr,JSON_UNESCAPED_UNICODE));
             return false;
         }
         $GoodPromotion->update_at = time();
@@ -167,6 +168,7 @@ class JdPiceSreach extends Object
         }
         $GoodPromotion->good_inf_arr = json_encode($DBarr);
         if (!$GoodPromotion->save()){
+            \Yii::error('保存商品jd商品促销信息失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE));
             $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPromotion->errors);
         }
         return $resArr;
