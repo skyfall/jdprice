@@ -523,7 +523,7 @@ class JdPiceSreach extends Object
 
             $fileType = mb_detect_encoding($output , array('UTF-8','GBK','LATIN1','BIG5' , 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1')) ;
             $output = mb_convert_encoding($output ,'utf-8' , $fileType);
-            
+
 
             //缓存数据
             self::$curlHtmlDom[$url] = $output;

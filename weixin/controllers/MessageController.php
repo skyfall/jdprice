@@ -33,6 +33,7 @@ class MessageController extends Controller
         $price = 0;
         $title = '';
         $priceModle = $jd->getGoodConfig($id,$ree);
+        var_dump($jd::$curlHtmlDom);
         var_dump($priceModle);
         var_dump($ree);
         var_dump($price);
