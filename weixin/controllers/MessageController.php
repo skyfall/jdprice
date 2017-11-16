@@ -32,7 +32,7 @@ class MessageController extends Controller
         $ree = [];
         $price = 0;
         $title = '';
-        $priceModle = $jd->getGoodPromotionStrage($id,$ree);
+        $priceModle = $jd->getGoodConfig($id,$ree);
         var_dump($priceModle);
         var_dump($ree);
         var_dump($price);

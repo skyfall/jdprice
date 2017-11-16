@@ -403,7 +403,6 @@ class JdPiceSreach extends Object
     // 将UNICODE编码后的内容进行解码
     public function unicode_decode($name)
     {
-
         // 转换编码，将Unicode编码转换成可以浏览的utf-8编码
         $pattern = '/([\w]+)|(\\\u([\w]{4}))/i';
         preg_match_all($pattern, $name, $matches);
@@ -524,6 +523,7 @@ class JdPiceSreach extends Object
 
             $fileType = mb_detect_encoding($output , array('UTF-8','GBK','LATIN1','BIG5' , 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1')) ;
             $output = mb_convert_encoding($output ,'utf-8' , $fileType);
+            
 
             //缓存数据
             self::$curlHtmlDom[$url] = $output;
