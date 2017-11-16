@@ -128,9 +128,9 @@ class JdPiceSreach extends Object
             return false;
         }
         $goodInf->update_at = time();
-        $goodInf->good_inf_arr = json_encode($JdGoodInfFrom->getAttributes());
+        $goodInf->good_inf_arr = json_encode($JdGoodInfFrom->getAttributes(),JSON_UNESCAPED_UNICODE);
         if (!$goodInf->save()){
-            $errArr['getGoodConfigStrage'][] = '添加数据失败 res:'.json_encode($goodInf->errors);
+            $errArr['getGoodConfigStrage'][] = '添加数据失败 res:'.json_encode($goodInf->errors,JSON_UNESCAPED_UNICODE);
         }
         return $JdGoodInfFrom;
     }
@@ -166,10 +166,10 @@ class JdPiceSreach extends Object
         foreach ($resArr as $v){
             $DBarr[] = $v->getAttributes();
         }
-        $GoodPromotion->good_inf_arr = json_encode($DBarr);
+        $GoodPromotion->good_inf_arr = json_encode($DBarr,JSON_UNESCAPED_UNICODE);
         if (!$GoodPromotion->save()){
             \Yii::error('保存商品jd商品促销信息失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE));
-            $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPromotion->errors);
+            $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPromotion->errors,JSON_UNESCAPED_UNICODE);
         }
         return $resArr;
 
@@ -238,7 +238,7 @@ class JdPiceSreach extends Object
         }
 
         if (!isset($priceArr[0]['p'])){
-            $errArr['getPice'][] = '返回值找不到价格 url:'.$url .' item:'.$itemId.' json:'.json_encode($priceArr);
+            $errArr['getPice'][] = '返回值找不到价格 url:'.$url .' item:'.$itemId.' json:'.json_encode($priceArr,JSON_UNESCAPED_UNICODE);
             return false;
         }
         $JdPiceModel = new JdPiceModel();
