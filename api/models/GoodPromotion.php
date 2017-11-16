@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "good_promotion".
  *
  * @property int $id
- * @property int $goodId 商品的id 例如京东 jd_111
+ * @property string $goodId 商品的id 例如京东 jd_111
  * @property int $create_at 创建时间
  * @property int $update_at 更新时间
  * @property string $good_inf_arr 商品的优惠信息json字符串
@@ -30,12 +30,11 @@ class GoodPromotion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'goodId', 'create_at', 'update_at', 'good_inf_arr', 'good_seller'], 'required'],
-            [['id', 'goodId', 'create_at', 'update_at'], 'integer'],
+            [['goodId', 'create_at', 'update_at', 'good_inf_arr', 'good_seller'], 'required'],
+            [['create_at', 'update_at'], 'integer'],
             [['good_inf_arr'], 'string'],
-            [['good_seller'], 'string', 'max' => 45],
+            [['goodId', 'good_seller'], 'string', 'max' => 45],
             [['goodId'], 'unique'],
-            [['id'], 'unique'],
         ];
     }
 
