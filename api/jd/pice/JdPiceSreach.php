@@ -405,6 +405,16 @@ class JdPiceSreach extends Object
     // 将UNICODE编码后的内容进行解码
     public function unicode_decode($name)
     {
+        if(!$name) return $name;
+        $decode = json_decode($name);
+        if($decode) return $decode;
+        $name = '["' . $name . '"]';
+        $decode = json_decode($name);
+        if(count($decode) == 1){
+            return $decode[0];
+        }
+        return $name;
+
         // 转换编码，将Unicode编码转换成可以浏览的utf-8编码
         $pattern = '/([\w]+)|(\\\u([\w]{4}))/i';
         preg_match_all($pattern, $name, $matches);
