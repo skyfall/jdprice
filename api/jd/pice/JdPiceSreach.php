@@ -404,23 +404,30 @@ class JdPiceSreach extends Object
     public function unicode_decode($name)
     {
 
-        $str = rawurldecode($name);
-        preg_match_all("/(?:%u.{4})|&#x.{4};|&#\d+;|.+/U",$str,$r);
-        $ar = $r[0];
-        //print_r($ar);
-        foreach($ar as $k=>$v) {
-            if(substr($v,0,2) == "%u"){
-                $ar[$k] = iconv("UCS-2BE","UTF-8",pack("H4",substr($v,-4)));
-            }
-            elseif(substr($v,0,3) == "&#x"){
-                $ar[$k] = iconv("UCS-2BE","UTF-8",pack("H4",substr($v,3,-1)));
-            }
-            elseif(substr($v,0,2) == "&#") {
-
-                $ar[$k] = iconv("UCS-2BE","UTF-8",pack("n",substr($v,2,-1)));
+        // 转换编码，将Unicode编码转换成可以浏览的utf-8编码
+        $pattern = '/([\w]+)|(\\\u([\w]{4}))/i';
+        preg_match_all($pattern, $name, $matches);
+        if (!empty($matches))
+        {
+            $name = '';
+            for ($j = 0; $j < count($matches[0]); $j++)
+            {
+                $str = $matches[0][$j];
+                if (strpos($str, '\\u') === 0)
+                {
+                    $code = base_convert(substr($str, 2, 2), 16, 10);
+                    $code2 = base_convert(substr($str, 4), 16, 10);
+                    $c = chr($code).chr($code2);
+                    $c = iconv('UCS-2', 'UTF-8', $c);
+                    $name .= $c;
+                }
+                else
+                {
+                    $name .= $str;
+                }
             }
         }
-        return join("",$ar);
+        return $name;
     }
 
     /**
