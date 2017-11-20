@@ -244,6 +244,7 @@ class MessageController extends Controller
 //                foreach ($pirceHistory as  $data){
 //                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price']."\r";
 //                }
+                $TextRequestMsg->Content .= "\r\n 历史价格信息:\r";
                 $lowerPrice = $JdPriceHistory->lowHistoryPirce;
                 $hightPrice = $JdPriceHistory->hightHistoryPirce;
                 $TextRequestMsg->Content .= '平均价格'.$JdPriceHistory->avePirce."\r";
