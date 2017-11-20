@@ -97,7 +97,7 @@ class JdPirceHistoryFrom extends Model
         $this->avePirce = round($allPrice/count($historyArr),2);
         //最低价格
         ArrayHelper::multisort($historyArr,['price'],[SORT_ASC]);
-        $this->lowerPrice = $historyArr[0];
+        $this->lowHistoryPirce = $historyArr[0];
         //最高价格
         ArrayHelper::multisort($historyArr,['price'],[SORT_DESC]);
         $this->hightHistoryPirce = $historyArr[0];
