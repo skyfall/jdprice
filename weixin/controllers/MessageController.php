@@ -239,11 +239,16 @@ class MessageController extends Controller
             $url = "http://item.jd.com/{$pathArr[0]}.html";
             $token = $jdHistory->encrype($url,2,true);
             if ($JdPriceHistory = $jd->getGoodPirceHistoryStrage($pathArr[0],$token,$errArr)){
-                $TextRequestMsg->Content .= "\r\n 历史价格信息:\r";
-                $pirceHistory = $JdPriceHistory->historyArr;
-                foreach ($pirceHistory as  $data){
-                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price']."\r";
-                }
+//                $TextRequestMsg->Content .= "\r\n 历史价格信息:\r";
+//                $pirceHistory = $JdPriceHistory->historyArr;
+//                foreach ($pirceHistory as  $data){
+//                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price']."\r";
+//                }
+                $lowerPrice = $JdPriceHistory->lowHistoryPirce;
+                $hightPrice = $JdPriceHistory->hightHistoryPirce;
+                $TextRequestMsg->Content .= '平均价格'.$JdPriceHistory->avePirce."\r";
+                $TextRequestMsg->Content .= '最低价格'.$lowerPrice['price'].' 时间：'.$lowerPrice['time']."\r";
+                $TextRequestMsg->Content .= '最高价格'.$hightPrice['price'].' 时间：'.$hightPrice['time']."\r";
 
             }
 

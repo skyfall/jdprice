@@ -31,6 +31,10 @@ class JdPirceHistoryFrom extends Model
 
     public $historyArr = [];
 
+    public $lowHistoryPirce = [];
+    public $hightHistoryPirce = [];
+    public $avePirce = 0;
+
     public function rules()
     {
         return [
@@ -86,6 +90,17 @@ class JdPirceHistoryFrom extends Model
                 'timestamp'=>str_replace(',','',$time)
             ];
         }
+        $allPrice = 0;
+        foreach ($historyArr as $v){
+            $allPrice += $v['price'];
+        }
+        $this->avePirce = round($allPrice/count($historyArr),2);
+        //最低价格
+        ArrayHelper::multisort($historyArr,['price'],[SORT_ASC]);
+        $this->lowerPrice = $historyArr[0];
+        //最高价格
+        ArrayHelper::multisort($historyArr,['price'],[SORT_DESC]);
+        $this->hightHistoryPirce = $historyArr[0];
 
         ArrayHelper::multisort($historyArr,['timestamp'],[SORT_ASC]);
         $this->historyArr = $historyArr;
