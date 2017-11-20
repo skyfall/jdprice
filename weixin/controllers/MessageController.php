@@ -12,6 +12,7 @@ namespace weixin\controllers;
 use api\controllers\UserController;
 use api\controllers\WeixinDataController;
 use api\jd\pice\JdPiceSreach;
+use api\jd\pice\JdPriceHistory;
 use api\modelsfrom\AddUserFrom;
 use api\modelsfrom\JDPromFrom;
 use api\modelsfrom\JdSkuCouponFrom;
@@ -30,10 +31,15 @@ class MessageController extends Controller
 
 //        $this->text();
         $jd =new JdPiceSreach();
-        $ree = [];
-        $price = 0;
+        $jdHistory = new JdPriceHistory();
+        $url = "http://item.jd.com/{$id}.html";
+        $token = $jdHistory->encrype($url,2,true);
+//        $ree = [];
+//        $price = 0;
         $title = '';
-        $priceModle = $jd->getGoodPromStrage($id,$reeet);
+        $priceModle = $jd->getGoodPirceHistoryStrage($id,$token,$ree);
+        var_dump($priceModle);
+        var_dump($ree);exit();
 //        json_decode()
 //        var_dump($jd->unicode_decode('\u4f20\u4e16\u7ecf\u5178\u4e66\u4e1b\uff1a\u0055\u004e\u0049\u0058\u7f16\u7a0b\u827a\u672f'));
 //        exit();
@@ -227,6 +233,19 @@ class MessageController extends Controller
                 }
             }
 
+
+            //获取历史几个信息
+            $jdHistory = new JdPriceHistory();
+            $url = "http://item.jd.com/{$pathArr[0]}.html";
+            $token = $jdHistory->encrype($url,2,true);
+            if ($JdPriceHistory = $jd->getGoodPirceHistoryStrage($pathArr[0],$token,$errArr)){
+                $TextRequestMsg->Content .= "\r\n 历史价格信息:\r";
+                $pirceHistory = $JdPriceHistory->historyArr;
+                foreach ($pirceHistory as  $data){
+                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price'];
+                }
+
+            }
 
             return $TextRequestMsg->GetMessageXml();
 

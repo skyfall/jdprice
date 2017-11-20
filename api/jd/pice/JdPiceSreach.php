@@ -10,10 +10,12 @@ namespace api\jd\pice;
 
 
 use api\models\GoodInfo;
+use api\models\GoodPirceHistory;
 use api\models\GoodPrice;
 use api\models\GoodPriceLog;
 use api\models\GoodPromotion;
 use api\modelsfrom\JdGoodInfFrom;
+use api\modelsfrom\JdPirceHistoryFrom;
 use api\modelsfrom\JDPromFrom;
 use api\modelsfrom\JdSkuCouponFrom;
 use yii\base\Object;
@@ -234,6 +236,49 @@ class JdPiceSreach extends Object
         return $resArr;
     }
 
+    /**
+     * 查询京东价格的历史信息 带缓冲
+     * @param $itemid
+     * @param string $token
+     * @param array $Error
+     * @return JdPirceHistoryFrom|bool
+     */
+    public function getGoodPirceHistoryStrage($itemid,$token = '',&$Error = []){
+        //查找数据库是否存在数据
+        $url = "http://item.jd.com/{$itemid}.html";
+        $goodId = "{$this->sellType}_{$itemid}";
+        if ($GoodPirceHistory = GoodPirceHistory::findOne(['goodId'=>$goodId])){
+            if ($GoodPirceHistory->update_at + \Yii::$app->params['goodPirceHistoryStarageTtl'] >= time()){
+                $JdPirceHistoryFrom = new JdPirceHistoryFrom();
+                $GoodPirceHistoryArr = json_decode($GoodPirceHistory->good_history_arr,true);
+                $JdPirceHistoryFrom->load($GoodPirceHistoryArr,'');
+                $JdPirceHistoryFrom->fixHistoryArr();
+                return $JdPirceHistoryFrom;
+            }
+        }else{
+            $GoodPirceHistory = new GoodPirceHistory();
+            $GoodPirceHistory->create_at = time();
+            $GoodPirceHistory->goodId = $goodId;
+            $GoodPirceHistory->good_seller = $this->sellType;
+        }
+        //查询信息
+        $resArr = $this->getGoodPirceHistory($itemid,$token,$Error );
+        if (!$resArr){
+            return false;
+        }
+        $GoodPirceHistory->update_at = time();
+        $GoodPirceHistory->good_history_arr = json_encode($resArr,JSON_UNESCAPED_UNICODE);
+        if (!$GoodPirceHistory->save()){
+            \Yii::error('保存商品jd商品历史价格信息失败 res:'.json_encode($GoodPirceHistory->errors,JSON_UNESCAPED_UNICODE));
+            $errArr['getGoodPromotionStrage'][] = '添加数据失败 res:'.json_encode($GoodPirceHistory->errors,JSON_UNESCAPED_UNICODE);
+        }
+        $JdPirceHistoryFrom = new JdPirceHistoryFrom();
+        $JdPirceHistoryFrom->load($resArr,'');
+        $JdPirceHistoryFrom->fixHistoryArr();
+        return $JdPirceHistoryFrom;
+
+
+    }
     /**
      * 写入价格变动信息
      * @param $goodId
@@ -513,6 +558,36 @@ class JdPiceSreach extends Object
         }
         return $resArr;
     }
+
+
+    /**
+     * 查询京东历史价格信息
+     * @param $jdUrl
+     * @param string $token
+     * @param array $Error
+     */
+    public function getGoodPirceHistory($itemid,$token = '',&$Error = []){
+        //url：http://tool.manmanbuy.com/history.aspx?DA=1&action=gethistory&url=http%253A%2F%2Fitem.jd.com%2F3786029.html&bjid=&spbh=&cxid=&zkid=&w=951&token=
+        $jdUrl = "http://item.jd.com/{$itemid}.html";
+        $jdeUrl = urlencode($jdUrl);
+
+        $token =  $token ? $token : md5(time()) ;
+        $url = "http://tool.manmanbuy.com/history.aspx?DA=1&action=gethistory&url={$jdeUrl}&bjid=&spbh=&cxid=&zkid=&w=951&token={$token}";
+        $header = [
+            'Accept-Encoding: gzip, deflate',
+            'Accept-Language: zh-CN,zh;q=0.8',
+            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+            'Accept: application/json, text/javascript, */*; q=0.01',
+            "Referer: http://tool.manmanbuy.com/history.aspx?w=951&h=580&h2=420&m=1&e=1&browes=1&url={$jdeUrl}&token={$token}",
+            'X-Requested-With: XMLHttpRequest',
+            "Cookie: {$jdUrl}",
+            'Connection: keep-alive',
+        ];
+        $json = $this->getHtml($url,$header);
+        return json_decode($json,true);
+
+    }
+
 
     // 将UNICODE编码后的内容进行解码
     public function unicode_decode($name)

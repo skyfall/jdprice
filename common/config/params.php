@@ -15,4 +15,5 @@ return [
     'goodConfigStarageTtl' => 3600,
     //商品优惠券缓存信息
     'goodPromotionStarageTtl'=>3600,
+    'goodPirceHistoryStarageTtl'=>3600,
 ];
