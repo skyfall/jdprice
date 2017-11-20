@@ -209,7 +209,7 @@ class MessageController extends Controller
 
 
 
-            $TextRequestMsg->Content = "该商品 \r ".$title." \r\n 现价:".round($price/100,2);
+            $TextRequestMsg->Content = "商品名称 \r ".$title." \r\n 现价:".round($price/100,2);
 
             //获取商品优惠券信息
             if ($promotionFroms = $jd->getGoodSkuCouponStrage($pathArr[0],$errArr)){
