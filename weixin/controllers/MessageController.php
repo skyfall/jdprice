@@ -242,7 +242,7 @@ class MessageController extends Controller
                 $TextRequestMsg->Content .= "\r\n 历史价格信息:\r";
                 $pirceHistory = $JdPriceHistory->historyArr;
                 foreach ($pirceHistory as  $data){
-                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price'];
+                    $TextRequestMsg->Content .= '时间'.$data['time'].' 价格:'.$data['price']."\r";
                 }
 
             }
