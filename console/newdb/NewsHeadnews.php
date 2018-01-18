@@ -21,6 +21,7 @@ class NewsHeadnews extends \yii\db\ActiveRecord
     {
         return Yii::$app->get('newdb');
     }
+
     /**
      * @inheritdoc
      */
@@ -36,9 +37,9 @@ class NewsHeadnews extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['color', 'bold', 'aid', 'displayorder'], 'integer'],
-            [['newurl'], 'string', 'max' => 2000],
-            [['title'], 'string', 'max' => 3000],
+//            [['color', 'bold', 'aid', 'displayorder'], 'integer'],
+//            [['newurl'], 'string', 'max' => 2000],
+//            [['title'], 'string', 'max' => 3000],
         ];
     }
 
