@@ -32,7 +32,7 @@ class NewsDate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['aid', 'cid', 'title', 'content'], 'required'],
+            [['aid'], 'required'],
 //            [['aid', 'cid'], 'integer'],
 //            [['content'], 'string'],
 //            [['title'], 'string', 'max' => 60],
