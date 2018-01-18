@@ -31,7 +31,7 @@ class NewsTopic extends \yii\db\ActiveRecord
     {
         return [
             [['tid'], 'required'],
-            [['topicname'], 'string', 'max' => 20],
+//            [['topicname'], 'string', 'max' => 20],
         ];
     }
 
