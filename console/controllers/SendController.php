@@ -96,7 +96,7 @@ class SendController extends Controller
                 if ($NewsCommentModelInf->save()){
 //                    echo  "写入成功 id.".$NewsCommentModel->id."\r\n";
                 }else{
-                    echo "写尔失败 err:".json_encode($NewsCommentModelInf->errors)." id:{$NewsCommentModelInf->aid}\r\n";
+                    echo "写尔失败 err:".json_encode($NewsCommentModelInf->errors)." id:{$NewsCommentModelInf->id}\r\n";
                 }
             }
         }
