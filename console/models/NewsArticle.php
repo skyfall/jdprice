@@ -69,7 +69,7 @@ class NewsArticle extends \yii\db\ActiveRecord
             [['title', 'pic', 'headpic', 'videopic', 'searchkeyword'], 'string', 'max' => 100],
             [['fromurl', 'youtube', 'v_qq', 'youku', 'iqiyi', 'fenghuang'], 'string', 'max' => 1000],
             [['froms'], 'string', 'max' => 60],
-            [['translate', 'editor'], 'string', 'max' => 30],
+            [['translate', 'editor'], 'string', 'max' => 40],
         ];
     }
 

@@ -33,15 +33,15 @@ class SendController extends Controller
              */
             foreach ($NewsArticles as $NewsArticle){
                 if ($newdbNewsArticleModel = \console\newdb\NewsArticle::find()->where(['aid' => $NewsArticle->aid])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $newdbNewsArticleModel = new \console\newdb\NewsArticle();
                 $newdbNewsArticleModel->load($NewsArticle->getAttributes(),'');
                 if ($newdbNewsArticleModel->save()){
-                    echo  "写入成功 aid.".$NewsArticle->aid."\r\n";
+//                    echo  "写入成功 aid.".$NewsArticle->aid."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($newdbNewsArticleModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($newdbNewsArticleModel->errors)." id:{$NewsArticle->aid}\r\n";
                 }
             }
         }
@@ -60,16 +60,16 @@ class SendController extends Controller
              */
             foreach ($NewsCategorys as $NewsCategory){
                 if ($NewsCategoryModel = \console\newdb\NewsCategory::find()->where(['cid' => $NewsCategory->cid])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $NewsCategoryModel = new \console\newdb\NewsCategory();
 
                 $NewsCategoryModel->load($NewsCategory->getAttributes(),'');
                 if ($NewsCategoryModel->save()){
-                    echo  "写入成功 aid.".$NewsCategoryModel->cid."\r\n";
+//                    echo  "写入成功 aid.".$NewsCategoryModel->cid."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($NewsCategoryModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($NewsCategory->errors)." id:{$NewsCategory->cid}\r\n";
                 }
             }
         }
@@ -87,16 +87,16 @@ class SendController extends Controller
              */
             foreach ($NewsComments as $NewsComment){
                 if ($NewsCommentModel = \console\newdb\NewsComment::find()->where(['id' => $NewsComment->id])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $NewsCommentModel = new \console\newdb\NewsComment();
 
                 $NewsCommentModel->load($NewsComment->getAttributes(),'');
                 if ($NewsCommentModel->save()){
-                    echo  "写入成功 id.".$NewsCommentModel->id."\r\n";
+//                    echo  "写入成功 id.".$NewsCommentModel->id."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($NewsCommentModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($NewsCommentModel->errors)." id:{$NewsCommentModel->aid}\r\n";
                 }
             }
         }
@@ -114,16 +114,16 @@ class SendController extends Controller
              */
             foreach ($NewsDates as $NewsDate){
                 if ($NewsDateModel = \console\newdb\NewsDate::find()->where(['aid' => $NewsDate->aid])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $NewsDateModel = new \console\newdb\NewsDate();
 
                 $NewsDateModel->load($NewsDate->getAttributes(),'');
                 if ($NewsDateModel->save()){
-                    echo  "写入成功 aid.".$NewsDateModel->aid."\r\n";
+//                    echo  "写入成功 aid.".$NewsDateModel->aid."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($NewsDateModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($NewsDate->errors)." id:{$NewsDate->aid}\r\n";
                 }
             }
         }
@@ -168,16 +168,16 @@ class SendController extends Controller
              */
             foreach ($NewsHeadnewss as $NewsHeadnews){
                 if ($NewsHeadnewsModel = \console\newdb\NewsHeadnews::find()->where(['id' => $NewsHeadnews->id])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $NewsHeadnewsModel = new \console\newdb\NewsHeadnews();
 
                 $NewsHeadnewsModel->load($NewsHeadnews->getAttributes(),'');
                 if ($NewsHeadnewsModel->save()){
-                    echo  "写入成功 aid.".$NewsHeadnewsModel->id."\r\n";
+//                    echo  "写入成功 aid.".$NewsHeadnewsModel->id."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($NewsHeadnewsModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($NewsHeadnewsModel->errors)." id:{$NewsHeadnewsModel->id}\r\n";
                 }
             }
         }
@@ -195,16 +195,16 @@ class SendController extends Controller
              */
             foreach ($NewsTopics as $NewsTopic){
                 if ($NewsTopicModel = \console\newdb\NewsTopic::find()->where(['tid' => $NewsTopic->tid])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $NewsTopicModel = new \console\newdb\NewsTopic();
 
                 $NewsTopicModel->load($NewsTopic->getAttributes(),'');
                 if ($NewsTopicModel->save()){
-                    echo  "写入成功 aid.".$NewsTopicModel->tid."\r\n";
+//                    echo  "写入成功 aid.".$NewsTopicModel->tid."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($NewsTopicModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($NewsTopic->errors)." id:{$NewsTopic->tid}\r\n";
                 }
             }
         }
@@ -223,16 +223,16 @@ class SendController extends Controller
              */
             foreach ($TopicContentLists as $TopicContentList){
                 if ($TopicContentListModel = \console\newdb\TopicContentList::find()->where(['cid' => $TopicContentList->cid])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $TopicContentListModel = new \console\newdb\TopicContentList();
 
                 $TopicContentListModel->load($TopicContentList->getAttributes(),'');
                 if ($TopicContentListModel->save()){
-                    echo  "写入成功 aid.".$TopicContentListModel->cid."\r\n";
+//                    echo  "写入成功 aid.".$TopicContentListModel->cid."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($TopicContentListModel->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($TopicContentListModel->errors)." id:{$TopicContentListModel->cid}\r\n";
                 }
             }
         }
@@ -251,16 +251,16 @@ class SendController extends Controller
              */
             foreach ($TopicListModels as $TopicListModel){
                 if ($TopicList = \console\newdb\TopicList::find()->where(['topic_id' => $TopicListModel->topic_id])->one()){
-                    echo "数据存在\r\n";
+//                    echo "数据存在\r\n";
                     continue;
                 }
                 $TopicList = new \console\newdb\TopicList();
 
                 $TopicList->load($TopicListModel->getAttributes(),'');
                 if ($TopicList->save()){
-                    echo  "写入成功 aid.".$TopicList->topic_id."\r\n";
+//                    echo  "写入成功 aid.".$TopicList->topic_id."\r\n";
                 }else{
-                    echo "希尔失败 err:".json_encode($TopicList->errors)."\r\n";
+                    echo "写尔失败 err:".json_encode($TopicList->errors)." id:{$TopicList->topic_id}\r\n";
                 }
             }
         }
