@@ -14,6 +14,7 @@ use console\models\NewsComment;
 use console\models\NewsDate;
 use console\models\NewsHeadnews;
 use console\models\NewsTopic;
+use console\models\NewsView;
 use console\models\TopicList;
 use console\models\NewsDayComment;
 use console\models\TopicContentList;
@@ -205,6 +206,34 @@ class SendController extends Controller
 //                    echo  "写入成功 aid.".$NewsTopicModel->tid."\r\n";
                 }else{
                     echo "写尔失败 err:".json_encode($NewsTopicModelInf->errors)." id:{$NewsTopicModelInf->tid}\r\n";
+                }
+            }
+        }
+    }
+
+
+    public function actionNewview($id = 1){
+        $limit = 100 ;
+        $offset = 0;
+        $NewsViewModel  = NewsView::find()->where(['>=','aid',$id]);
+
+        while ($NewsViews = $NewsViewModel->offset($offset)->limit($limit)->orderBy('aid asc')->all()){
+            $offset += $limit;
+            /**
+             * @var NewsView $NewsView
+             */
+            foreach ($NewsViews as $NewsView){
+                if ($NewsViewlInf = \console\newdb\NewsView::find()->where(['tid' => $NewsView->aid])->one()){
+//                    echo "数据存在\r\n";
+                    continue;
+                }
+                $NewsViewlInf = new \console\newdb\NewsView();
+
+                $NewsViewlInf->load($NewsView->getAttributes(),'');
+                if ($NewsViewlInf->save()){
+//                    echo  "写入成功 aid.".$NewsTopicModel->tid."\r\n";
+                }else{
+                    echo "写尔失败 err:".json_encode($NewsViewlInf->errors)." id:{$NewsViewlInf->tid}\r\n";
                 }
             }
         }
