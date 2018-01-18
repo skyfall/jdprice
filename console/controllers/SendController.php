@@ -223,7 +223,7 @@ class SendController extends Controller
              * @var NewsView $NewsView
              */
             foreach ($NewsViews as $NewsView){
-                if ($NewsViewlInf = \console\newdb\NewsView::find()->where(['tid' => $NewsView->aid])->one()){
+                if ($NewsViewlInf = \console\newdb\NewsView::find()->where(['aid' => $NewsView->aid])->one()){
 //                    echo "数据存在\r\n";
                     continue;
                 }
@@ -233,7 +233,7 @@ class SendController extends Controller
                 if ($NewsViewlInf->save()){
 //                    echo  "写入成功 aid.".$NewsTopicModel->tid."\r\n";
                 }else{
-                    echo "写尔失败 err:".json_encode($NewsViewlInf->errors)." id:{$NewsViewlInf->tid}\r\n";
+                    echo "写尔失败 err:".json_encode($NewsViewlInf->errors)." id:{$NewsViewlInf->aid}\r\n";
                 }
             }
         }
