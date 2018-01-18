@@ -247,20 +247,20 @@ class SendController extends Controller
         while ($TopicListModels = $TopicListModel->offset($offset)->limit($limit)->orderBy('topic_id asc')->all()){
             $offset += $limit;
             /**
-             * @var TopicList $TopicListModel
+             * @var TopicList $TopicList
              */
-            foreach ($TopicListModels as $TopicListModel){
-                if ($TopicList = \console\newdb\TopicList::find()->where(['topic_id' => $TopicListModel->topic_id])->one()){
+            foreach ($TopicListModels as $TopicList){
+                if ($TopicListInf = \console\newdb\TopicList::find()->where(['topic_id' => $TopicList->topic_id])->one()){
 //                    echo "数据存在\r\n";
                     continue;
                 }
-                $TopicList = new \console\newdb\TopicList();
+                $TopicListInf = new \console\newdb\TopicList();
 
-                $TopicList->load($TopicListModel->getAttributes(),'');
-                if ($TopicList->save()){
+                $TopicListInf->load($TopicList->getAttributes(),'');
+                if ($TopicListInf->save()){
 //                    echo  "写入成功 aid.".$TopicList->topic_id."\r\n";
                 }else{
-                    echo "写尔失败 err:".json_encode($TopicList->errors)." id:{$TopicList->topic_id}\r\n";
+                    echo "写尔失败 err:".json_encode($TopicListInf->errors)." id:{$TopicListInf->topic_id}\r\n";
                 }
             }
         }
