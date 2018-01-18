@@ -49,7 +49,7 @@ class NewsComment extends \yii\db\ActiveRecord
             [['id'], 'required'],
             [['aid', 'userid', 'rootid', 'replyid', 'addtime', 'up', 'down', 'state', 'commnum', 'del_status', 'report_status'], 'integer'],
             [['username'], 'string', 'max' => 30],
-            [['content'], 'string', 'max' => 1500],
+//            [['content'], 'string', 'max' => 1500],
             [['ipdress'], 'string', 'max' => 39],
             [['address'], 'string', 'max' => 100],
             [['report_con'], 'string', 'max' => 300],
