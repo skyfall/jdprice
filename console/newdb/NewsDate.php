@@ -33,10 +33,10 @@ class NewsDate extends \yii\db\ActiveRecord
     {
         return [
             [['aid', 'cid', 'title', 'content'], 'required'],
-            [['aid', 'cid'], 'integer'],
-            [['content'], 'string'],
-            [['title'], 'string', 'max' => 60],
-            [['aid'], 'unique'],
+//            [['aid', 'cid'], 'integer'],
+//            [['content'], 'string'],
+//            [['title'], 'string', 'max' => 60],
+//            [['aid'], 'unique'],
         ];
     }
 
