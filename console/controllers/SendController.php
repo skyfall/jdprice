@@ -59,17 +59,17 @@ class SendController extends Controller
              * @var NewsCategory $NewsCategory
              */
             foreach ($NewsCategorys as $NewsCategory){
-                if ($NewsCategoryModel = \console\newdb\NewsCategory::find()->where(['cid' => $NewsCategory->cid])->one()){
+                if ($NewsCategoryInf = \console\newdb\NewsCategory::find()->where(['cid' => $NewsCategory->cid])->one()){
 //                    echo "数据存在\r\n";
                     continue;
                 }
-                $NewsCategoryModel = new \console\newdb\NewsCategory();
+                $NewsCategoryInf = new \console\newdb\NewsCategory();
 
-                $NewsCategoryModel->load($NewsCategory->getAttributes(),'');
-                if ($NewsCategoryModel->save()){
+                $NewsCategoryInf->load($NewsCategory->getAttributes(),'');
+                if ($NewsCategoryInf->save()){
 //                    echo  "写入成功 aid.".$NewsCategoryModel->cid."\r\n";
                 }else{
-                    echo "写尔失败 err:".json_encode($NewsCategory->errors)." id:{$NewsCategory->cid}\r\n";
+                    echo "写尔失败 err:".json_encode($NewsCategoryInf->errors)." id:{$NewsCategoryInf->cid}\r\n";
                 }
             }
         }
